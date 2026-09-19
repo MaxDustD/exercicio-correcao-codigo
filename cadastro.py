@@ -1,17 +1,18 @@
 """ Sistema de Cadastro de Pessoas """
+import os
 
 def exibir_menu():
     """ Exibe o menu para seleção de opções """
-    print("=========================")
-    print(" CADASTRO DE PESSOAS")
-    print("=========================")
+    print("===========================")
+    print("   CADASTRO DE PESSOAS")
+    print("===========================")
     print("1 - Cadastrar pessoa")
     print("2 - Consultar pessoa")
     print("3 - Alterar pessoa")
     print("4 - Listar pessoas")
     print("5 - Analisar cadastro")
     print("6 - Sair")
-    return int(input("Escolha uma opcao: "))
+    return int(input("\nEscolha uma opcao: "))
 
 def cadastrar_pessoa(lista_nomes, lista_idades, lista_emails):
     """ Cadastro de pessoa com nome, idade e email. 
@@ -65,7 +66,7 @@ def alterar_pessoa(lista_nomes, lista_idades, lista_emails):
     if pos == -1:
         print("Nao encontrado")
     else:
-        lista_nomes[pos] = input("Novo nome: ")
+        lista_nomes[pos] = input("\nNovo nome: ")
         lista_idades[pos] = int(input("Nova idade: "))
         lista_emails[pos] = input("Novo e-mail: ")
         print("Pessoa alterada!")
@@ -78,10 +79,9 @@ def listar_pessoas(lista_nomes, lista_idades, lista_emails):
     pos = 0
     while pos < len(lista_nomes):
         exibir_pessoa(lista_nomes, lista_idades, lista_emails, pos)
-        print("-------------------------")
+        print("===============================")
         pos = pos + 1
     print("Total: " + str(len(lista_nomes)))
-
 
 def analisar_faixa_etaria(idade):
     """ Verifica a idade de uma pessoa, de criança até idoso """
@@ -154,5 +154,9 @@ while opcao != 6:
         print("Saindo...")
     else:
         print("Opcao invalida")
+
+    if opcao != 6:
+        input("\nPressione Enter para voltar ao menu...")
+        os.system("cls")
 
 print("Fim do programa")
