@@ -1,8 +1,9 @@
 """ Sistema de Cadastro de Pessoas """
 import os
 
+from cadastro import CadastroPessoas
+
 def exibir_menu():
-    """ Exibe o menu para seleção de opções """
     print("===========================")
     print("   CADASTRO DE PESSOAS")
     print("===========================")
@@ -14,77 +15,59 @@ def exibir_menu():
     print("6 - Sair")
     return int(input("\nEscolha uma opcao: "))
 
-def cadastrar_pessoa(lista_nomes, lista_idades, lista_emails):
-    """ Cadastro de pessoa com nome, idade e email. 
-        Também retorna se é maior de idade """
+def cadastrar_pessoa(cadastro):
     nome = input("Informe o nome: ")
-    lista_nomes.append(nome)
     idade = int(input("Informe a idade: "))
-    lista_idades.append(idade)
     email = input("Informe o email: ")
-    lista_emails.append(email)
+
+    cadastro.cadastrar(nome, idade, email)
+
     if idade >= 18:
         print("Situacao: Maior de idade")
     else:
         print("Situacao: Menor de idade")
 
-def exibir_pessoa(lista_nomes, lista_idades, lista_emails, pos):
-    """ Impressão do nome, idade e email de uma pessoa 
-        a partir de uma posição """
-    print("Nome: " + lista_nomes[pos])
-    print("Idade: " + str(lista_idades[pos]))
-    print("E-mail: " + lista_emails[pos])
-    if lista_idades[pos] >= 18:
+def exibir_pessoa(pessoa):
+    print("Nome: " + pessoa.getNome())
+    print("Idade: " + str(pessoa.getIdade()))
+    print("E-mail: " + pessoa.getEmail())
+    if pessoa.getIdade() >= 18:
         print("Situacao: Maior de idade")
     else:
         print("Situacao: Menor de idade")
 
-def buscar_pessoa(lista_nomes, nome_procurado):
-    """ Busca de pessoa a partir de um nome para ser procurado """
-    pos = 0
-    while pos < len(lista_nomes):
-        if lista_nomes[pos] == nome_procurado:
-            return pos
-        pos = pos + 1
-    return -1
-
-def consultar_pessoa(lista_nomes, lista_idades, lista_emails):
-    """ Verifica se determinada pessoa existe.
-        Se sim, faz exibição de seus dados """
+def consultar_pessoa(cadastro):
     procurado = input("Nome para consultar: ")
-    pos = buscar_pessoa(lista_nomes, procurado)
-    if pos == -1:
+    pessoa = cadastro.buscarPorNome(procurado)
+    if pessoa is None:
         print("Nao encontrado")
     else:
-        exibir_pessoa(lista_nomes, lista_idades, lista_emails, pos)
+        exibir_pessoa(pessoa)
 
-def alterar_pessoa(lista_nomes, lista_idades, lista_emails):
-    """ Modifica todos os dados de uma pessoa a partir
-        de um nome para procurar """
+def alterar_pessoa(cadastro):
     procurado = input("Nome para alterar: ")
-    pos = buscar_pessoa(lista_nomes, procurado)
-    if pos == -1:
+    pessoa = cadastro.buscarPorNome(procurado)
+    if pessoa is None:
         print("Nao encontrado")
     else:
-        lista_nomes[pos] = input("\nNovo nome: ")
-        lista_idades[pos] = int(input("Nova idade: "))
-        lista_emails[pos] = input("Novo e-mail: ")
+        novo_nome = input("\nNovo nome: ")
+        nova_idade = int(input("Nova idade: "))
+        novo_email = input("Novo e-mail: ")
+        cadastro.alterar(procurado, novo_nome, nova_idade, novo_email)
         print("Pessoa alterada!")
-        exibir_pessoa(lista_nomes, lista_idades, lista_emails, pos)
+        exibir_pessoa(pessoa)
 
-def listar_pessoas(lista_nomes, lista_idades, lista_emails):
-    """ Mostra todas as pessoas que estiverem cadastradas """
-    if len(lista_nomes) == 0:
+def listar_pessoas(cadastro):
+    pessoas = cadastro.listar()
+    if len(pessoas) == 0:
         print("Nenhuma pessoa cadastrada")
-    pos = 0
-    while pos < len(lista_nomes):
-        exibir_pessoa(lista_nomes, lista_idades, lista_emails, pos)
-        print("===============================")
-        pos = pos + 1
-    print("Total: " + str(len(lista_nomes)))
+    
+    for pessoa in pessoas:
+        exibir_pessoa(pessoa)
+        print("------------------------------")
+    print("Total: " + str(len(pessoas)))
 
 def analisar_faixa_etaria(idade):
-    """ Verifica a idade de uma pessoa, de criança até idoso """
     if idade < 12:
         print("Faixa etaria: crianca")
     elif idade < 18:
@@ -95,8 +78,6 @@ def analisar_faixa_etaria(idade):
         print("Faixa etaria: idoso")
 
 def analisar_contato(idade, email):
-    """ Verifica se uma pessoa é menor de idade 
-        e se o contato está faltando algo """
     if idade >= 18 and "@" in email:
         print("Contato: completo")
     elif idade >= 18:
@@ -105,7 +86,6 @@ def analisar_contato(idade, email):
         print("Contato: menor de idade")
 
 def analisar_email(email):
-    """ Analisa se o email é válido e o provedor """
     if "@" not in email:
         print("E-mail invalido")
     elif email.endswith("@gmail.com"):
@@ -115,15 +95,18 @@ def analisar_email(email):
     else:
         print("Provedor: outro")
 
-def analisar_pessoa(lista_nomes, lista_idades, lista_emails):
-    """ Faz a análise de idade, email e contato de uma pessoa """ 
+def analisar_pessoa(cadastro):
     procurado = input("Nome para analisar: ")
-    analisar_email(email)
-    analisar_contato(idade, email)
+    pessoa = cadastro.buscarPorNome(procurado)
 
-nomes = []
-idades = []
-emails = []
+    if pessoa is None:
+        print("Pessoa nao encontrada")
+    else:
+        analisar_faixa_etaria(pessoa.getIdade())
+        analisar_email(pessoa.getEmail())
+        analisar_contato(pessoa.getIdade(), pessoa.getEmail())
+
+cadastro = CadastroPessoas()
 
 opcao = 0
 
@@ -132,15 +115,15 @@ while opcao != 6:
     opcao = exibir_menu()
 
     if opcao == 1:
-        cadastrar_pessoa(nomes, idades, emails)
+        cadastrar_pessoa(cadastro)
     elif opcao == 2:
-        consultar_pessoa(nomes, idades, emails)
+        consultar_pessoa(cadastro)
     elif opcao == 3:
-        alterar_pessoa(nomes, idades, emails)
+        alterar_pessoa(cadastro)
     elif opcao == 4:
-        listar_pessoas(nomes, idades, emails)
+        listar_pessoas(cadastro)
     elif opcao == 5:
-        analisar_pessoa(nomes, idades, emails)
+        analisar_pessoa(cadastro)
     elif opcao == 6:
         print("Saindo...")
     else:
