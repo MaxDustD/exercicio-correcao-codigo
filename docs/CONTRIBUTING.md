@@ -23,6 +23,7 @@ Foi adotado o padrão de commits convencional para o histórico do Git. Os prefi
 * `refactor`: Alterações no código que não corrigem bugs nem adicionam funcionalidades, mas melhoram sua estrutura/legibilidade.
 * `feat`: Introdução de uma nova funcionalidade.
 * `fix`: Correção de um bug.
+* `docs`: Documentação.
 
 ## Pylint
 
@@ -32,10 +33,23 @@ O comando abaixo pode ser usado para verificar o código localmente, mas não é
 pylint cadastro.py
 ```
 
-## Antes de concluir
+## Antes de enviar uma alteração
 
-- Use nomes claros
-- Mantenha o código organizado
-- Teste a alteração
-- Rode o Pylint localmente se quiser revisar antes do commit
-- Verifique se a mudança não deixou o código mais confuso
+1. Execute o programa: `python src/main.py`
+2. Confira as mudanças: `git status` e `git diff`
+3. Execute as análises: `pylint src` e `radon cc src -s`
+4. Faça um commit com uma mensagem objetiva.
+
+## Convenções
+
+- Um commit representa uma alteração verificável.
+- Não inclua dados reais de pessoas no repositório.
+- Registre decisões e resultados relevantes no histórico Git.
+
+## Antes de iniciar
+
+Certifique-se de que está trabalhando com a versão atualizada do projeto:
+
+`git switch main`
+`git pull`
+`git status`
