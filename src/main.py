@@ -106,31 +106,30 @@ def analisar_pessoa(cadastro):
         analisar_email(pessoa.getEmail())
         analisar_contato(pessoa.getIdade(), pessoa.getEmail())
 
-cadastro = CadastroPessoas()
+def executar():
+    cadastro = CadastroPessoas()
+    opcao = 0
 
-opcao = 0
+    while opcao != 6:
+        opcao = exibir_menu()
+        if opcao == 1:
+            cadastrar_pessoa(cadastro)
+        elif opcao == 2:
+            consultar_pessoa(cadastro)
+        elif opcao == 3:
+            alterar_pessoa(cadastro)
+        elif opcao == 4:
+            listar_pessoas(cadastro)
+        elif opcao == 5:
+            analisar_pessoa(cadastro)
+        elif opcao == 6:
+            print("Saindo...")
+        else:
+            print("Opcao invalida")
+        if opcao != 6:
+            input("\nPressione Enter para voltar ao menu...")
+            os.system("cls")
+    print("Fim do programa")
 
-while opcao != 6:
-
-    opcao = exibir_menu()
-
-    if opcao == 1:
-        cadastrar_pessoa(cadastro)
-    elif opcao == 2:
-        consultar_pessoa(cadastro)
-    elif opcao == 3:
-        alterar_pessoa(cadastro)
-    elif opcao == 4:
-        listar_pessoas(cadastro)
-    elif opcao == 5:
-        analisar_pessoa(cadastro)
-    elif opcao == 6:
-        print("Saindo...")
-    else:
-        print("Opcao invalida")
-
-    if opcao != 6:
-        input("\nPressione Enter para voltar ao menu...")
-        os.system("cls")
-
-print("Fim do programa")
+if __name__ == "__main__":
+    executar()
