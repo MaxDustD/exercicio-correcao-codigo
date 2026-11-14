@@ -1,55 +1,75 @@
-# Contribuição e padronização do projeto
+# Como contribuir
 
-## Boas-vindas
+Este repositório é um exercício de correção e melhoria de código. Contribuições devem manter a solução organizada, legível e consistente, sem complexidade desnecessária.
 
-Seja bem-vindo ao projeto. Este repositório é um exercício de correção e melhoria de código, então o foco principal é manter o código organizado, legível e consistente.
+O projeto usa Python 3.14 ou superior. Siga as convenções: módulos, funções, métodos e variáveis em `snake_case`; classes em `PascalCase`; constantes em `UPPER_CASE`; e prefira funções com no máximo cinco argumentos. Não inclua dados reais de pessoas no repositório.
 
-Aqui, qualquer contribuição deve respeitar as convenções do projeto e ajudar a deixar a solução mais clara, sem complicar a lógica por regras excessivas. O objetivo não é “deixar tudo perfeito” do ponto de vista do Pylint, mas manter um padrão útil para o exercício.
+## Verificar o estado do repositório
 
-## Padrões do projeto
-
-- Python mínimo: 3.14
-- Módulos: snake_case
-- Classes: PascalCase
-- Funções: snake_case
-- Variáveis: snake_case
-- Constantes: UPPER_CASE
-- Métodos: snake_case
-- Máximo de argumentos por função: 5
-
-## Organização de Commits
-Foi adotado o padrão de commits convencional para o histórico do Git. Os prefixos mais comuns utilizados neste projeto são:
-* `chore`: Mudanças no processo de desenvolvimento, ferramentas de build ou configurações que não modificam o código de produção.
-* `refactor`: Alterações no código que não corrigem bugs nem adicionam funcionalidades, mas melhoram sua estrutura/legibilidade.
-* `feat`: Introdução de uma nova funcionalidade.
-* `fix`: Correção de um bug.
-* `docs`: Documentação.
-
-## Pylint
-
-O comando abaixo pode ser usado para verificar o código localmente, mas não é necessário por haver configuração de pre-commit e validação automática:
+Antes de começar, atualize a branch principal e confirme que não há alterações locais que possam ser sobrescritas:
 
 ```bash
-pylint cadastro.py
+git status
+git switch main
+git pull --ff-only origin main
+git status
 ```
 
-## Antes de enviar uma alteração
+Se houver alterações locais, salve-as ou faça o commit antes de trocar de branch.
 
-1. Execute o programa: `python src/main.py`
-2. Confira as mudanças: `git status` e `git diff`
-3. Execute as análises: `pylint src` e `radon cc src -s`
-4. Faça um commit com uma mensagem objetiva.
+## Branch, commits e hooks do pre-commit
 
-## Convenções
+Crie uma branch para a tarefa, com um nome curto que indique o objetivo:
 
-- Um commit representa uma alteração verificável.
-- Não inclua dados reais de pessoas no repositório.
-- Registre decisões e resultados relevantes no histórico Git.
+```bash
+git switch -c tipo/descricao-curta
+```
 
-## Antes de iniciar
+Instale as dependências e o hook do Git:
 
-Certifique-se de que está trabalhando com a versão atualizada do projeto:
+```bash
+python -m pip install -r requirements.txt
+pre-commit install
+```
 
-`git switch main`
-`git pull`
-`git status`
+O hook executa o Pylint nos arquivos Python preparados para commit e os testes do projeto. Corrija eventuais falhas antes de tentar o commit novamente.
+
+Use commits pequenos, cada um representando uma alteração verificável, com mensagens objetivas no padrão convencional. Prefixos comuns neste projeto:
+
+- `feat`: nova funcionalidade.
+- `fix`: correção de bug.
+- `refactor`: melhoria estrutural sem alterar o comportamento esperado.
+- `docs`: documentação.
+- `chore`: ferramentas e configurações de desenvolvimento.
+
+Exemplo: `docs: atualiza instruções de contribuição`.
+
+## Testes e Pylint
+
+Execute os testes antes de publicar a branch:
+
+```bash
+python -m pytest -q
+```
+
+Para executar manualmente as verificações configuradas no pre-commit em todos os arquivos:
+
+```bash
+pre-commit run --all-files
+```
+
+## Publicar a branch e abrir o Pull Request
+
+Envie a branch para o repositório remoto:
+
+```bash
+git push -u origin tipo/descricao-curta
+```
+
+Abra um Pull Request com destino à branch `main`. Descreva o problema e a solução, informe os testes executados e destaque qualquer mudança que exija atenção de quem revisa.
+
+## Revisar e integrar à branch principal
+
+Revise o diff e os resultados das verificações. A pessoa autora deve responder aos comentários e atualizar a branch quando necessário; depois, execute novamente os testes e o pre-commit.
+
+Integre o Pull Request à `main` somente depois das revisões e verificações exigidas pelo projeto. Evite integrar mudanças com conflitos ou verificações pendentes.
