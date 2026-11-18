@@ -69,4 +69,4 @@ python src/main.py
 pytest
 ```
 
-Por padrão, o cadastro usa o repositório em memória. Os dados existem somente enquanto o programa está em execução e são perdidos ao encerrá-lo. Embora o cadastro aceite outro repositório por código, o menu atual não oferece uma opção para selecionar persistência; ainda não há integração com MySQL.
+Por padrão, o cadastro usa o repositório em sql, configurado em `src/main.py` na variável `USAR_MYSQL`. Para usar o repositório em memória, basta definir como `FALSE`. O repositório usa persistência local. 
